@@ -23,26 +23,41 @@ export default function Page() {
           viewport can hold — so the room's own content scrolls inside the
           stage rather than being cut off. */}
       <div className="flex flex-1 flex-col overflow-y-auto overscroll-contain px-[var(--gutter)] pb-[clamp(3rem,9svh,5rem)] pt-[clamp(3rem,9svh,5rem)]">
-        <div className="rise mx-auto my-auto w-full max-w-[64rem]">
+        <div className="rise mx-auto my-auto w-full max-w-[52rem]">
           {/* The visible heading is gone by request; the document still needs
               one, so it stays for screen readers and the outline. */}
           <h1 className="sr-only">Three Answers</h1>
 
-          {/* Q1, Q2, Q3 — one under the other, each its own row. The number
-              sits in a fixed column so the questions all start on one line. */}
-          <ol className="m-0 list-none p-0">
+          {/* Q1, Q2, Q3 — one under the other, centred, each with room to
+              breathe. `textAlign` is set inline because `.plate` declares
+              text-align: left after Tailwind's utilities layer and would
+              otherwise win. */}
+          {/* Padding is floored in rem rather than left to svh alone, so the
+              questions keep their air on a short window instead of collapsing
+              together. */}
+          <ol className="m-0 flex list-none flex-col gap-[clamp(1.75rem,4svh,3rem)] p-0">
             {findings.sections.map((s, i) => (
-              <li key={s.n} className={i > 0 ? 'hair-top' : undefined}>
+              <li key={s.n} className={i > 0 ? 'hair-top pt-[clamp(1.75rem,4svh,3rem)]' : undefined}>
+                {/* `.plate` declares `display: block` and `text-align: left`
+                    after Tailwind's utilities layer, so `flex`/`text-center`
+                    lose to it and the spans would run inline on one line.
+                    Both are forced inline here. */}
                 <button
                   type="button"
                   onClick={() => setOpen(i)}
-                  className="plate group grid w-full grid-cols-[3rem_1fr] items-baseline gap-x-[clamp(1rem,3vw,2.5rem)] gap-y-3 py-[clamp(1.75rem,4.5svh,3rem)] text-left sm:grid-cols-[5rem_1fr_auto]"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                  }}
+                  className="plate group w-full px-[clamp(1rem,3vw,2rem)] py-[clamp(1.25rem,2.5svh,2rem)]"
                 >
-                  <span className="t-label plate__index">Q{i + 1}</span>
-                  <span className="t-display text-[clamp(1.375rem,1.1rem+1.5vw,2.5rem)] leading-[1.15] text-[var(--ink)]">
+                  <span className="t-label plate__index block">Q{i + 1}</span>
+                  <span className="t-display mt-[clamp(1.125rem,2.5svh,1.75rem)] block max-w-[24ch] text-[clamp(1.375rem,1.1rem+1.5vw,2.5rem)] leading-[1.25] text-[var(--ink)]">
                     {s.q}
                   </span>
-                  <span className="t-label col-start-2 text-[var(--accent)] sm:col-start-3 sm:justify-self-end">
+                  <span className="t-label mt-[clamp(1.25rem,3svh,2rem)] block text-[var(--accent)]">
                     Read — {s.points.length} points
                   </span>
                 </button>
@@ -51,7 +66,7 @@ export default function Page() {
           </ol>
 
           {/* The way out, in the same place it is in every other room. */}
-          <div className="hair-top mt-[clamp(2rem,6svh,3.5rem)] flex justify-end pt-[clamp(1.5rem,4svh,2.5rem)]">
+          <div className="hair-top mt-[clamp(2rem,6svh,3.5rem)] flex justify-center pt-[clamp(1.75rem,4.5svh,2.75rem)]">
             <Doorway from="findings" />
           </div>
         </div>
@@ -60,10 +75,13 @@ export default function Page() {
       <Overlay open={open !== null} onClose={() => setOpen(null)} labelledBy="overlay-title">
         {section ? (
           <div className="mx-auto w-full max-w-[62rem]">
-            <p className="t-label text-[var(--accent)]">Q{(open ?? 0) + 1}</p>
+            {/* Header centred to match the room it opened from. The points
+                below stay ranged left — centring running text that wraps over
+                several lines makes it markedly harder to read. */}
+            <p className="t-label text-center text-[var(--accent)]">Q{(open ?? 0) + 1}</p>
             <h2
               id="overlay-title"
-              className="t-display mt-5 text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] text-[var(--ink)]"
+              className="t-display mx-auto mt-5 max-w-[26ch] text-center text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] text-[var(--ink)]"
             >
               {section.q}
             </h2>

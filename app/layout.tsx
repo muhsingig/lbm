@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Inter_Tight } from 'next/font/google';
 import { ThresholdProvider } from '@/components/Threshold';
+import SplashCursor from '@/components/SplashCursor';
 import './globals.css';
 
 /**
@@ -72,6 +73,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           change they are covering. */}
       <body>
         <ThresholdProvider>{children}</ThresholdProvider>
+        {/* The cursor trail, on every page. It reads the room's own --accent,
+            so the colour changes with the floor without being told. */}
+        <SplashCursor />
       </body>
     </html>
   );
