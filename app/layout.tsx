@@ -24,7 +24,12 @@ const body = Inter_Tight({
   display: 'swap',
 });
 
+/* Absolute URLs for the share cards. Set NEXT_PUBLIC_SITE_URL at build time to
+   the real domain; the fallback only keeps local builds valid. */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3100';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Second Nature — a walkthrough | Art House, NMACC',
   description:
     'Stand in Second Nature, presented by Superblue at the Art House, NMACC, Mumbai. An academic field study for Luxury Brand Management — one room at a time, hallway to Level 3.',
@@ -33,6 +38,15 @@ export const metadata: Metadata = {
     description:
       'One room at a time, from the hallway to Level 3. An academic field study of the Superblue exhibition at Art House, NMACC, Mumbai.',
     type: 'article',
+    siteName: 'Second Nature — a walkthrough',
+  },
+  /* Each floor generates its own card from its own palette, so a shared link
+     shows the room it points at rather than one card for the whole site. */
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Second Nature — a walkthrough',
+    description:
+      'One room at a time, from the hallway to Level 3. An academic field study of the Superblue exhibition at Art House, NMACC, Mumbai.',
   },
 };
 

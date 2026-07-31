@@ -44,7 +44,7 @@ export const rooms: Room[] = [
   {
     id: 'hallway',
     path: '/hallway',
-    sign: 'The Hallway',
+    sign: 'Hallway',
     short: 'HALL',
     doorLine: 'Before the ticket',
     storey: 0,
@@ -52,7 +52,7 @@ export const rooms: Room[] = [
   {
     id: 'level-0',
     path: '/level-0',
-    sign: 'The Floor That Watches Back',
+    sign: 'Level 0',
     short: 'L0',
     doorLine: 'Level 00 — Random International',
     storey: 1,
@@ -60,7 +60,7 @@ export const rooms: Room[] = [
   {
     id: 'level-1',
     path: '/level-1',
-    sign: 'The Digital Garden',
+    sign: 'Level 1',
     short: 'L1',
     doorLine: 'Level 01 — teamLab',
     storey: 2,
@@ -68,7 +68,7 @@ export const rooms: Room[] = [
   {
     id: 'level-2',
     path: '/level-2',
-    sign: 'Weather, Indoors',
+    sign: 'Level 2',
     short: 'L2',
     doorLine: 'Level 02 — Heijdens · Murakami',
     storey: 3,
@@ -76,7 +76,7 @@ export const rooms: Room[] = [
   {
     id: 'level-3',
     path: '/level-3',
-    sign: 'The Page You Take Home',
+    sign: 'Level 3',
     short: 'L3',
     doorLine: 'Level 03 — Es Devlin',
     storey: 4,

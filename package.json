@@ -5,11 +5,13 @@
   "description": "A scroll-driven walkthrough of Second Nature at Art House, NMACC — LBM field study",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-shipped.mjs",
     "build": "next build",
     "start": "next start",
     "preview": "node scripts/serve.mjs",
     "lint": "next lint",
-    "check:words": "node scripts/check-words.mjs"
+    "check:words": "node scripts/check-words.mjs",
+    "check:shipped": "node scripts/check-shipped.mjs"
   },
   "dependencies": {
     "next": "^15.5.22",

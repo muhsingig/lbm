@@ -505,6 +505,11 @@ html[data-room='level-0'] .stage__watch { opacity: 1; }
   width: var(--door-w);
   height: var(--door-h);
   transform-origin: 50% 50%;
+  /* The door lies flat against the wall, edge-on to the camera. Its sign
+     counter-rotates to face back down the corridor, and that only survives
+     if the door keeps its own 3D space — flattened, the sign collapses to a
+     zero-width sliver and the name disappears. */
+  transform-style: preserve-3d;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -537,12 +542,21 @@ html[data-room='level-0'] .stage__watch { opacity: 1; }
   border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
   background: color-mix(in srgb, var(--bg) 94%, transparent);
   box-shadow: 0 0 60px -12px color-mix(in srgb, var(--glow) 50%, transparent);
-  transform-origin: 50% 100%;
   transition: border-color 600ms var(--ease), background-color 600ms var(--ease);
 }
-/* Counter-rotate out of the wall so the board faces down the corridor. */
-.door3d--left .door3d__sign  { transform: translateX(-50%) rotateY(-90deg); }
-.door3d--right .door3d__sign { transform: translateX(-50%) rotateY(90deg); }
+/* Counter-rotate out of the wall so the board faces down the corridor.
+   It pivots on the edge that meets the wall, not on its middle — pivot on the
+   middle and half the board swings behind the wall, taking half the name with
+   it. Anchored at the edge it projects wholly into the corridor, the way a
+   blade sign hangs. */
+.door3d--left .door3d__sign {
+  transform-origin: 0 100%;
+  transform: rotateY(-90deg);
+}
+.door3d--right .door3d__sign {
+  transform-origin: 100% 100%;
+  transform: translateX(-100%) rotateY(90deg);
+}
 .door3d__short { display: block; color: var(--accent); }
 .door3d__name {
   display: block;

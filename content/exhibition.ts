@@ -21,16 +21,19 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-/* ── TODO: fill these two in before submission ───────────────────────────── */
+/* The credit line on the Exit page. `npm run check:shipped` fails the build if
+   placeholder text ever finds its way back into these three values. */
 export const authors = {
-  // TODO: replace with the five group members' names, in the order you want
-  // them credited. These appear in the Exit credits and the project note.
-  names: ['TODO: Name one', 'TODO: Name two', 'TODO: Name three', 'TODO: Name four', 'TODO: Name five'],
-  // TODO: replace with your college's name.
-  course: 'Luxury Brand Management · Internals · TODO: College name',
-  visitDate: 'TODO: date of visit',
+  names: [
+    'Muhsin Gigani',
+    'Pavitra Rajpal',
+    'Hatim Sampalwala',
+    'Hamza Chhatriwala',
+    'Tanya Wadhwani',
+  ],
+  course: 'Luxury Brand Management · Internals · Jai Hind College',
+  visitDate: '29 July 2026',
 };
-/* ────────────────────────────────────────────────────────────────────────── */
 
 export type ChapterId =
   | 'hallway'
@@ -424,7 +427,7 @@ export const chapters: Chapter[] = [
           year: '2019',
           medium: 'Camera, ultraviolet light, photosensitive plywood',
           floor: 'LEVEL 00',
-          note: 'Not photographed. TODO: add an image here if any group member has one.',
+          note: 'Not photographed. On a work about disappearing, the gap is the record.',
         },
         body:
           'A camera you do not notice takes your face and burns it by ultraviolet light onto photosensitive plywood. It glows for a while. Then it fades, and there is nothing, and the wood is ready for the next person. In our notes we called this the printing machine — the imprint other people leave on you. We did not photograph it, which on a work about disappearing is an accident we have decided to keep.',
@@ -628,6 +631,68 @@ export const chapters: Chapter[] = [
         body:
           'The screen is not a screen. It is a wall built from 365 sketchbooks holding around twenty-five years of Devlin’s drawings and notes. Across it plays a film of the Vietnamese dancer Dam Van Huynh performing beside a recording of himself made nearly two decades earlier — the same body, moving next to the memory of itself. Look closely at the wall in this photograph and the drawings are legible. A great many of them are birds.',
       },
+
+      /* The pages we took. Two moments rather than one because a Moment holds a
+         single Media — read together they are one beat: the page at the wall,
+         then the same kind of page once it is out of the building. */
+      {
+        id: 'take-home-stage',
+        layout: 'offset-left',
+        label: {
+          kind: 'wall',
+          plate: 'PLATE 11',
+          attribution: 'Es Devlin',
+          title: 'The page we took',
+          medium: 'Pen on paper; one sheet, taken off the wall',
+          floor: 'LEVEL 03',
+          note: 'Photographed against the wall it came from, before we left the floor.',
+        },
+        /* The photograph is not in the repo yet, so this runs in the same
+           "described but not photographed" state the rest of the site uses for
+           an honest gap — a broken frame would be worse than an empty one.
+           To restore, save the file and paste this back:
+
+           media: {
+             kind: 'image',
+             src: '/media/level-3/02-take-home-page.jpg',
+             alt: 'A large sheet of paper held up in front of the sketchbook wall, the pinned drawings of the wall itself visible behind it. On the sheet, drawn in pen: an open-sided cube in perspective, two faces the height of the structure filling its inner walls, and one small figure standing alone at its centre while a dense crowd of quickly drawn heads masses across the ground outside it. Long ruled lines flare outward to the left and right.',
+             width: 960,
+             height: 1280,
+             crop: { aspect: '16 / 9', position: 'center 43%' },
+           }, */
+        body:
+          'The page one of us pulled off the wall was not a bird. It was a stage — an open-sided cube drawn in perspective, two faces the height of the structure filling its inner walls, one small figure alone at the centre, and a crowd put in last as a field of hurried strokes across the floor outside. Devlin’s other working life is designing stages for stadium tours, and the sketchbooks do not separate that work from the rest of the drawing. Held up against the wall it came from, it is still legible as a thought rather than a finished thing: ruled construction lines left in, a face redrawn twice, the crowd added afterwards.',
+      },
+      {
+        id: 'take-home-maze',
+        layout: 'offset-right',
+        label: {
+          kind: 'wall',
+          plate: 'PLATE 12',
+          attribution: 'Es Devlin',
+          title: 'The same page, at home',
+          medium: 'Pen on paper; boxed title and marginal note in the artist’s hand',
+          floor: 'LEVEL 03',
+          note: 'Photographed after the visit, on a kitchen cloth in Mumbai.',
+        },
+        /* As above — file not in the repo yet. To restore, paste this back:
+
+           media: {
+             kind: 'image',
+             src: '/media/level-3/03-take-home-page-maze.jpg',
+             alt: 'A sheet of paper photographed on a patterned cloth. In pen, a dense lattice of staircases and ramps crossing one another at conflicting angles in the manner of an Escher interior, with a few small figures climbing them. A boxed title is handwritten at the head of the sheet and a note runs down the left-hand side.',
+             width: 900,
+             height: 1600,
+             crop: { aspect: '3 / 4', position: 'center 52%' },
+           }, */
+        // Still to do: transcribe the boxed title and the marginal note, then work the
+        // artist's own words into the body below. Partial reading only, not yet
+        // verified: "...imagines a MAZE all around them ... the surface is ...
+        // real concrete, masonry etc." Left out of the copy deliberately rather
+        // than paraphrased from a guess.
+        body:
+          'The second page only reads properly once it is out of the building. On a kitchen cloth at home it is a lattice of staircases running at conflicting angles, an interior that cannot be built, with figures climbing it anyway — and along one edge, a note in the artist’s hand working the problem out. This is the part the wall label cannot do. An archive that disperses does not end up in storage; it ends up on a table in Mumbai, in a house that has nothing to do with the building it left.',
+      },
     ],
     quote: {
       text:
@@ -673,8 +738,9 @@ export const inversion = {
     heading: 'It costs nothing. It is not for sale anywhere.',
     body:
       'The archive disperses over the run of the exhibition. The work is designed to be diminished by the people who come to see it — every visitor leaves with a piece of it, and the wall gets smaller. A brand willingly letting its own asset be carried away in pieces is the opposite of how this category normally behaves.',
-    todo:
-      'TODO: photograph or scan the page you took home and drop it in at /media/level-3/02-take-home-page.jpg. It is the strongest single image available to this project and it is the argument of the next chapter in physical form.',
+    /* The `todo` that used to sit here pointed at a missing scan of the page.
+       PLATE 11 and PLATE 12 now carry those pages directly, so the note has
+       nowhere left to point. */
   },
 };
 

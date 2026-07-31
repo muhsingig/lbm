@@ -2,7 +2,7 @@ import { chapters } from '@/content/exhibition';
 import { Room } from '@/components/Room';
 
 export const metadata = {
-  title: 'The Hallway — Second Nature, Art House NMACC',
+  title: 'Hallway — Second Nature, Art House NMACC',
   description:
     'Before the ticket: oud held evenly across an enormous volume of air, the floral elephant, and a working handloom on the Swadesh shop floor.',
 };

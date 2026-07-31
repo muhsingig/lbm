@@ -33,7 +33,6 @@ export default function Page() {
           eyebrow: 'Take one',
           title: inversion.after.heading,
           body: `${inversion.line} ${inversion.after.body}`,
-          todo: inversion.after.todo,
         },
         {
           id: 'field-note',
