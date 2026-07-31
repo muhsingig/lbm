@@ -1,0 +1,811 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE STAGE MODEL
+
+   The page never scrolls. One screen is one room. Everything that would be a
+   scroll section in a normal site arrives instead as an overlay over the room,
+   the way it does in a gallery: you stand in the space, you approach a work,
+   you step back.
+
+   Tone is NMACC's, not a sketchbook's: deep volumes, one soft pool of light,
+   hairline rules, and a lot of air.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@property --bg     { syntax: '<color>'; inherits: true; initial-value: #0B0B0D; }
+@property --wall   { syntax: '<color>'; inherits: true; initial-value: #131316; }
+@property --floor  { syntax: '<color>'; inherits: true; initial-value: #08080A; }
+@property --ink    { syntax: '<color>'; inherits: true; initial-value: #EFECE5; }
+@property --muted  { syntax: '<color>'; inherits: true; initial-value: #8E8B84; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #C9A227; }
+@property --glow   { syntax: '<color>'; inherits: true; initial-value: #C9A227; }
+
+:root {
+  --bg: #0B0B0D;
+  --wall: #131316;
+  --floor: #08080A;
+  --ink: #EFECE5;
+  --muted: #8E8B84;
+  --accent: #C9A227;
+  --glow: #C9A227;
+  --hair: rgba(239, 236, 229, 0.14);
+
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --theme-ms: 900ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+/* ── The rooms ──────────────────────────────────────────────────────────── */
+
+html[data-room='entrance'],
+html[data-room='hallway'],
+html[data-room='exit'] {
+  --bg: #0B0B0D; --wall: #16130F; --floor: #08080A;
+  --ink: #EFECE5; --muted: #8E8B84; --accent: #C9A227; --glow: #E8C46B;
+  --hair: rgba(201, 162, 39, 0.20);
+  color-scheme: dark;
+}
+
+html[data-room='level-0'] {
+  --bg: #050607; --wall: #101317; --floor: #030405;
+  --ink: #F4F6F8; --muted: #929CA6; --accent: #7FA6C0; --glow: #CFE2EF;
+  --hair: rgba(146, 156, 166, 0.18);
+  color-scheme: dark;
+}
+
+html[data-room='level-1'] {
+  --bg: #05081C; --wall: #0D1436; --floor: #030614;
+  --ink: #F7F2FF; --muted: #A49DCC; --accent: #FF4E97; --glow: #2ED9E6;
+  --hair: rgba(46, 217, 230, 0.22);
+  color-scheme: dark;
+}
+
+html[data-room='level-2'] {
+  --bg: #0F1215; --wall: #191F24; --floor: #0A0D10;
+  --ink: #EBE5D6; --muted: #97A99C; --accent: #A9CEAE; --glow: #C9DEEA;
+  --hair: rgba(169, 206, 174, 0.18);
+  color-scheme: dark;
+}
+
+/* The inversion. Warm paper, ink blue, and the light comes from the room
+   rather than from a lamp. */
+html[data-room='level-3'],
+html[data-room='findings'] {
+  --bg: #EFE9DA; --wall: #E7DFCC; --floor: #DED4BE;
+  --ink: #14110F; --muted: #6B6255; --accent: #2C4A7C; --glow: #FFFFFF;
+  --hair: rgba(20, 17, 15, 0.18);
+  color-scheme: light;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+
+html {
+  transition:
+    --bg var(--theme-ms) var(--ease), --wall var(--theme-ms) var(--ease),
+    --floor var(--theme-ms) var(--ease), --ink var(--theme-ms) var(--ease),
+    --muted var(--theme-ms) var(--ease), --accent var(--theme-ms) var(--ease),
+    --glow var(--theme-ms) var(--ease);
+}
+
+body {
+  margin: 0;
+  /* The page does not scroll. This is the whole model. */
+  overflow: hidden;
+  height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--theme-ms) var(--ease), color var(--theme-ms) var(--ease);
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+
+img, video { display: block; max-width: 100%; }
+
+/* ── Type — two families, disciplined ───────────────────────────────────────
+   Cormorant Garamond carries the voice: high contrast, light, set large with
+   air around it. Inter Tight does everything else, including the wall labels,
+   which are uppercase and widely tracked the way a printed museum label is.
+   No third face, no handwriting, no sketch.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.t-display {
+  font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.03;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.t-display--italic { font-style: italic; }
+
+/* The wall-label and UI voice. */
+.t-label {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: clamp(0.5625rem, 0.54rem + 0.1vw, 0.6875rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+
+.t-label--tight { letter-spacing: 0.14em; }
+
+.t-body { max-width: 58ch; }
+
+.rupee { font-family: var(--font-body), system-ui, sans-serif; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE ROOM
+
+   A dark volume with one pool of light. Built from gradients rather than
+   drawings — the room should read as architecture and lighting, which is what
+   makes a gallery feel considered, not as an illustration of one.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Back wall: lifted out of the dark by a wash from above.
+   It fades out before the horizon so the only hard mark in the room is the
+   hairline itself — a visible tonal seam reads as two stacked rectangles,
+   not as a wall meeting a floor. */
+.stage__wall {
+  position: absolute;
+  inset: 0 0 26% 0;
+  background:
+    radial-gradient(125% 105% at 50% -12%, var(--wall) 0%, transparent 74%),
+    linear-gradient(to bottom, var(--wall) 0%, color-mix(in srgb, var(--wall) 40%, transparent) 62%, transparent 100%);
+  transition: background var(--theme-ms) var(--ease);
+}
+
+/* Floor: a plane, catching the same light and holding a little of it. */
+.stage__floor {
+  position: absolute;
+  inset: 74% 0 0 0;
+  background:
+    radial-gradient(70% 120% at 50% -20%, color-mix(in srgb, var(--glow) 10%, transparent) 0%, transparent 62%),
+    linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--floor) 70%, transparent) 26%, var(--floor) 100%);
+  transition: background var(--theme-ms) var(--ease);
+}
+
+/* Where wall meets floor. One hairline, the most architectural mark here. */
+.stage__horizon {
+  position: absolute;
+  left: 0; right: 0; top: 74%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--hair) 12%, var(--hair) 88%, transparent);
+  transition: background var(--theme-ms) var(--ease);
+}
+
+/* The pool of light the works hang in. */
+.stage__light {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(115vw, 1500px);
+  height: min(105vh, 1000px);
+  translate: -50% -50%;
+  background: radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--glow) 15%, transparent) 0%, transparent 70%);
+  filter: blur(14px);
+  pointer-events: none;
+  transition: background var(--theme-ms) var(--ease);
+}
+
+/* Vignette — the edges of a dark room fall away. Absent on paper. */
+.stage__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 100% at 50% 45%, transparent 42%, rgba(0, 0, 0, 0.62) 100%);
+  transition: opacity var(--theme-ms) var(--ease);
+}
+html[data-room='level-3'] .stage__vignette,
+html[data-room='findings'] .stage__vignette { opacity: 0.12; }
+
+/* A fine grain over the whole volume. */
+.stage__grain {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Level 0 only: the room notices where you are, and is slow about it. */
+.stage__watch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease);
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--glow) 10%, transparent), transparent 70%);
+}
+html[data-room='level-0'] .stage__watch { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WORK HUNG ON THE WALL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.plate {
+  position: relative;
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 700ms var(--ease);
+}
+.plate:hover, .plate:focus-visible { transform: translateY(-6px); }
+
+.plate__frame {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--wall) 70%, black);
+  box-shadow:
+    0 30px 60px -30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px var(--hair);
+  transition: box-shadow 700ms var(--ease);
+}
+.plate:hover .plate__frame,
+.plate:focus-visible .plate__frame {
+  box-shadow:
+    0 44px 80px -30px rgba(0, 0, 0, 0.95),
+    0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 0 60px -20px color-mix(in srgb, var(--glow) 55%, transparent);
+}
+
+.plate__frame img,
+.plate__frame video { width: 100%; height: 100%; object-fit: cover; }
+
+/* The work is lit from above, like everything else in the room. */
+.plate__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.10), transparent 42%, rgba(0,0,0,0.34));
+}
+
+/* Its number, stencilled on the wall beneath it. */
+.plate__index {
+  color: var(--muted);
+  transition: color 700ms var(--ease);
+}
+.plate:hover .plate__index,
+.plate:focus-visible .plate__index { color: var(--accent); }
+
+/* Where a work exists but we have no photograph: the wall is left empty and
+   says so. */
+.plate--absent .plate__frame {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+.plate--absent:hover .plate__frame,
+.plate--absent:focus-visible .plate__frame {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WALL TEXT — the quotation, painted large and low-contrast on the back wall,
+   which is what a gallery actually does with a curator's line.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.wall-text {
+  color: color-mix(in srgb, var(--ink) 26%, transparent);
+  transition: color var(--theme-ms) var(--ease);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   OVERLAY — you approach a work; the room stays behind it
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  animation: overlay-in 620ms var(--ease) both;
+}
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* The room has to recede properly, or the label sits on top of the hang and
+   both compete. Near-opaque, plus a real blur so any light that does get
+   through reads as depth rather than as text. */
+.overlay__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+  backdrop-filter: blur(28px) saturate(0.65);
+}
+
+.overlay__panel {
+  position: relative;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: panel-in 760ms var(--ease) both;
+}
+@keyframes panel-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+.hair-top { border-top: 1px solid var(--hair); }
+.hair-bottom { border-bottom: 1px solid var(--hair); }
+
+/* ── The wall label, printed ────────────────────────────────────────────── */
+
+.wall-label { max-width: 30rem; }
+.wall-label__attribution { color: var(--ink); }
+.wall-label__title { color: var(--ink); }
+.wall-label__meta { color: var(--muted); }
+.wall-label__note {
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0.015em;
+  line-height: 1.7;
+}
+
+/* Our own voice — italic, indented, and clearly not the building's. */
+.field-note {
+  border-left: 1px solid var(--accent);
+  padding-left: clamp(1rem, 2.5vw, 2rem);
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHROME — thin, quiet, always in the same place
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chrome-btn {
+  color: var(--muted);
+  transition: color 500ms var(--ease);
+}
+.chrome-btn:hover, .chrome-btn:focus-visible { color: var(--ink); }
+
+/* The way on, at the edge of the room. */
+.doorway {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--muted);
+  transition: color 600ms var(--ease), gap 600ms var(--ease);
+}
+.doorway:hover, .doorway:focus-visible { color: var(--accent); gap: 1.5rem; }
+
+.doorway__slot {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--glow) 26%, transparent), transparent);
+  transition: background 600ms var(--ease);
+}
+.doorway:hover .doorway__slot,
+.doorway:focus-visible .doorway__slot {
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--glow) 62%, transparent), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE CORRIDOR
+
+   The walk through the building. Scrolling does not move a page — it moves
+   you, forward along a real perspective corridor, and the door to each floor
+   comes up on alternating walls as you pass it.
+
+   Four planes and a camera on the Z axis. Only `transform` is animated.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.corridor-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+  perspective: 1000px;
+  perspective-origin: 50% 46%;
+}
+
+.corridor {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.plane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+
+/* Floor — planks running away from you, catching the light from above. */
+.plane--floor {
+  width: var(--w);
+  height: var(--len);
+  transform: translate(-50%, -50%) translate3d(0, calc(var(--h) / 2), var(--cz)) rotateX(90deg);
+  background:
+    repeating-linear-gradient(to right,
+      transparent 0 118px,
+      color-mix(in srgb, var(--ink) 7%, transparent) 118px 119px),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--glow) 9%, var(--floor)) 0%,
+      var(--floor) 45%,
+      var(--bg) 100%);
+}
+
+/* Ceiling — a lighting rail, which is what is actually above you here. */
+.plane--ceiling {
+  width: var(--w);
+  height: var(--len);
+  transform: translate(-50%, -50%) translate3d(0, calc(var(--h) / -2), var(--cz)) rotateX(-90deg);
+  background:
+    repeating-linear-gradient(to bottom,
+      transparent 0 260px,
+      color-mix(in srgb, var(--glow) 85%, transparent) 260px 340px,
+      transparent 340px 750px),
+    linear-gradient(to top, color-mix(in srgb, var(--wall) 80%, black) 0%, var(--bg) 100%);
+}
+
+/* Walls — tall panels with a hairline joint, fading into the dark ahead. */
+.plane--left,
+.plane--right {
+  width: var(--len);
+  height: var(--h);
+  background:
+    repeating-linear-gradient(to right,
+      transparent 0 299px,
+      color-mix(in srgb, var(--ink) 8%, transparent) 299px 300px),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--wall) 62%, var(--glow)) 0%,
+      color-mix(in srgb, var(--wall) 130%, white) 34%,
+      var(--wall) 72%,
+      color-mix(in srgb, var(--floor) 92%, black) 100%);
+}
+.plane--left {
+  transform: translate(-50%, -50%) translate3d(calc(var(--w) / -2), 0, var(--cz)) rotateY(90deg);
+}
+.plane--right {
+  transform: translate(-50%, -50%) translate3d(calc(var(--w) / 2), 0, var(--cz)) rotateY(-90deg);
+}
+
+/* The far end, lit — you can always see how much building is left. */
+.plane--end {
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) translate3d(0, 0, calc(var(--d) * -1));
+  background: radial-gradient(60% 70% at 50% 55%, color-mix(in srgb, var(--glow) 40%, transparent), var(--bg) 78%);
+}
+
+/* ── A door off the corridor ─────────────────────────────────────────────── */
+
+.door3d {
+  --door-h: 460px;
+  --door-w: 340px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--door-w);
+  height: var(--door-h);
+  transform-origin: 50% 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--ink);
+  padding-bottom: 18px;
+}
+.door3d--left {
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--w) / -2 + 3px), calc(var(--h) / 2 - var(--door-h) / 2), calc(var(--z) * -1))
+    rotateY(90deg);
+}
+.door3d--right {
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--w) / 2 - 3px), calc(var(--h) / 2 - var(--door-h) / 2), calc(var(--z) * -1))
+    rotateY(-90deg);
+}
+
+/* The sign above it, the way every door in this building is signed. */
+.door3d__sign {
+  position: absolute;
+  bottom: calc(var(--door-h) - 22px);
+  left: 50%;
+  width: max-content;
+  max-width: 460px;
+  text-align: center;
+  padding: 16px 30px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  box-shadow: 0 0 60px -12px color-mix(in srgb, var(--glow) 50%, transparent);
+  transform-origin: 50% 100%;
+  transition: border-color 600ms var(--ease), background-color 600ms var(--ease);
+}
+/* Counter-rotate out of the wall so the board faces down the corridor. */
+.door3d--left .door3d__sign  { transform: translateX(-50%) rotateY(-90deg); }
+.door3d--right .door3d__sign { transform: translateX(-50%) rotateY(90deg); }
+.door3d__short { display: block; color: var(--accent); }
+.door3d__name {
+  display: block;
+  margin-top: 6px;
+  font-size: 40px;
+  line-height: 1.05;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* The leaf itself: a recess in the wall with light spilling under it. */
+.door3d__leaf {
+  position: relative;
+  display: block;
+  width: 250px;
+  height: 380px;
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg) 92%, black) 0%,
+    color-mix(in srgb, var(--bg) 78%, black) 62%,
+    color-mix(in srgb, var(--glow) 55%, var(--bg)) 100%);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 0 90px -14px color-mix(in srgb, var(--glow) 45%, transparent);
+  transition: box-shadow 700ms var(--ease);
+}
+.door3d__light {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -2px;
+  height: 6px;
+  background: var(--glow);
+  opacity: 0.9;
+  filter: blur(2px);
+  transition: opacity 700ms var(--ease), height 700ms var(--ease);
+}
+.door3d__hint {
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 600ms var(--ease);
+}
+
+.door3d:hover .door3d__leaf,
+.door3d:focus-visible .door3d__leaf {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 75%, transparent),
+    0 0 70px -10px color-mix(in srgb, var(--glow) 60%, transparent);
+}
+.door3d:hover .door3d__light,
+.door3d:focus-visible .door3d__light { opacity: 1; height: 7px; }
+.door3d:hover .door3d__sign,
+.door3d:focus-visible .door3d__sign {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+}
+.door3d:hover .door3d__hint,
+.door3d:focus-visible .door3d__hint { color: var(--accent); }
+
+/* ── The fixed layer over the walk ───────────────────────────────────────── */
+
+.corridor-ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.corridor-ui__intro {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(58rem, 88vw);
+  text-align: center;
+  transition: opacity 400ms linear;
+}
+.corridor-ui__intro > * { pointer-events: auto; }
+
+.corridor-ui__progress {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(clamp(1rem, 3svh, 1.75rem) + 2.6rem);
+  height: 1px;
+  background: var(--hair);
+}
+.corridor-ui__bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.corridor-ui__status {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1rem, 3svh, 1.75rem);
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* A plain list of the same doors, for reduced motion and for anyone who would
+   rather not walk. Hidden visually until it is the only way through. */
+.corridor-fallback {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 12;
+  display: none;
+  padding: clamp(2rem, 6svh, 4rem) var(--gutter);
+  background: var(--bg);
+}
+.corridor-fallback a {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 0.6rem 0;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 1px solid var(--hair);
+}
+.corridor-fallback a .t-label { width: 3.5rem; color: var(--muted); }
+.corridor-fallback a .t-display { font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
+
+@media (prefers-reduced-motion: reduce) {
+  .corridor { transform: none !important; }
+  .corridor-viewport { perspective: none; }
+  .plane, .door3d { display: none; }
+  .corridor-fallback { display: block; position: static; }
+  .corridor-ui__intro { position: static; translate: none; width: auto; padding: clamp(2rem,8svh,5rem) var(--gutter) 0; }
+  .corridor-ui { position: static; pointer-events: auto; }
+  .corridor-ui__progress, .corridor-ui__status { display: none; }
+  .corridor-viewport { position: static; overflow: visible; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE THRESHOLD — going through a door
+
+   Two leaves close over the room you are leaving, a hairline of the next
+   floor's light shows in the seam, and then they part on somewhere else.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.threshold {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  display: none;
+}
+.threshold[data-active] { display: block; }
+
+.threshold__leaf {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 50.5%;
+  background: var(--bg);
+  transition-property: transform;
+  will-change: transform;
+}
+/* A soft inner edge, so a leaf reads as a plane catching light rather than
+   as a rectangle sliding across the screen. */
+.threshold__leaf--l {
+  left: 0;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--bg) 100%, black) 82%, color-mix(in srgb, var(--seam) 22%, var(--bg)) 100%);
+}
+.threshold__leaf--r {
+  right: 0;
+  background-image: linear-gradient(to left, color-mix(in srgb, var(--bg) 100%, black) 82%, color-mix(in srgb, var(--seam) 22%, var(--bg)) 100%);
+}
+
+.threshold__seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: clamp(1px, 0.14vw, 3px);
+  translate: -50%;
+  background: var(--seam);
+  box-shadow: 0 0 40px 6px color-mix(in srgb, var(--seam) 55%, transparent);
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARRIVING IN A ROOM
+   You step in: the room settles back from slightly too close, and its light
+   comes up a beat behind it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.enter { animation: enter 1100ms var(--ease) both; }
+@keyframes enter {
+  from { opacity: 0; transform: scale(1.035); }
+  to   { opacity: 1; transform: none; }
+}
+
+.stage__light { animation: light-up 1600ms var(--ease) both; }
+@keyframes light-up {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* The hang arrives last, work by work, the way your eye actually crosses a
+   room — left to right, not all at once. */
+.rail > * { animation: hang 900ms var(--ease) both; }
+.rail > *:nth-child(1) { animation-delay: 260ms; }
+.rail > *:nth-child(2) { animation-delay: 340ms; }
+.rail > *:nth-child(3) { animation-delay: 420ms; }
+.rail > *:nth-child(4) { animation-delay: 500ms; }
+.rail > *:nth-child(5) { animation-delay: 580ms; }
+.rail > *:nth-child(6) { animation-delay: 660ms; }
+.rail > *:nth-child(n + 7) { animation-delay: 740ms; }
+@keyframes hang {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.rise { animation: rise 900ms var(--ease) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* Level 1 only: slow drifting light. */
+@keyframes drift {
+  0%   { transform: translate3d(0,0,0) scale(1); opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.9; }
+  100% { transform: translate3d(var(--dx), var(--dy), 0) scale(1.5); opacity: 0; }
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+
+/* On small screens the works become a rail you swipe. The page still does not
+   scroll — only the rail does. */
+.rail {
+  display: flex;
+  gap: clamp(1rem, 4vw, 3.5rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding-inline: var(--gutter);
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: center; flex: 0 0 auto; }
+
+/* Centre the hang when it fits, and stay fully scrollable when it does not.
+   `justify-content: center` would put the first work past the left edge with
+   no way to reach it — auto margins on the end items do not. */
+.rail > *:first-child { margin-inline-start: auto; }
+.rail > *:last-child { margin-inline-end: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { transition: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .particle { display: none; }
+  .stage__watch { display: none; }
+  .threshold { display: none !important; }
+  .rail > * { animation: none; }
+}

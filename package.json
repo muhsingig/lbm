@@ -1,0 +1,28 @@
+{
+  "name": "second-nature-2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A scroll-driven walkthrough of Second Nature at Art House, NMACC — LBM field study",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "preview": "node scripts/serve.mjs",
+    "lint": "next lint",
+    "check:words": "node scripts/check-words.mjs"
+  },
+  "dependencies": {
+    "next": "^15.5.22",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}
