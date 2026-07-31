@@ -20,7 +20,9 @@ function SplashCursor({
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
-  DENSITY_DISSIPATION = 3.5,
+  // Slower than the stock 3.5 so the trail is still there a beat after the
+  // cursor has moved on, instead of vanishing inside ~0.3s.
+  DENSITY_DISSIPATION = 2.4,
   VELOCITY_DISSIPATION = 2,
   PRESSURE = 0.1,
   PRESSURE_ITERATIONS = 20,
@@ -919,7 +921,10 @@ function SplashCursor({
       }
     }
 
-    const DYE_SCALE = 0.15;
+    /* The stock 0.15 was tuned for fully saturated rainbow hues. These accents
+       are muted brand colours, and at 0.15 the trail only lifts a near-black
+       room by about 30/255 — present, but easy to miss entirely. */
+    const DYE_SCALE = 0.45;
 
     function parseColor(value) {
       const rgbMatch = value.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i);

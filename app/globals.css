@@ -614,6 +614,17 @@ html[data-room='level-0'] .stage__watch { opacity: 1; }
 .door3d:hover .door3d__hint,
 .door3d:focus-visible .door3d__hint { color: var(--accent); }
 
+/* ── The cursor trail ────────────────────────────────────────────────────────
+   The fluid canvas blends additively, which only ever lightens what is behind
+   it. That reads well on the dark floors and does nothing at all on the two
+   paper ones, where the ground is already near-white — the ink-blue accent
+   lifts #EFE9DA by about 19/255, which is invisible. On those rooms the canvas
+   multiplies instead, so the same colour darkens the paper and shows. */
+html[data-room='level-3'] #fluid,
+html[data-room='findings'] #fluid {
+  mix-blend-mode: multiply;
+}
+
 /* ── The way in ──────────────────────────────────────────────────────────────
    A closed door on a black field. The corridor is built and sitting behind it
    the whole time; this simply covers it, so the floors cannot be read off the
