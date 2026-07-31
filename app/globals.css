@@ -614,6 +614,123 @@ html[data-room='level-0'] .stage__watch { opacity: 1; }
 .door3d:hover .door3d__hint,
 .door3d:focus-visible .door3d__hint { color: var(--accent); }
 
+/* ── The way in ──────────────────────────────────────────────────────────────
+   A closed door on a black field. The corridor is built and sitting behind it
+   the whole time; this simply covers it, so the floors cannot be read off the
+   walls before you have gone in. */
+
+.entry {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 3.5svh, 2.25rem);
+  padding: clamp(1.5rem, 5svh, 3rem) var(--gutter);
+  background: var(--bg);
+  text-align: center;
+  transition: opacity 1000ms var(--ease), visibility 0s linear 1000ms;
+}
+
+/* Opened: the field lifts and the building is behind it. */
+.entry--open {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.entry__eyebrow { color: var(--accent); }
+.entry__hint { color: var(--muted); }
+
+/* The door, with the title lettered across it. */
+.entry__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-door {
+  display: block;
+  width: clamp(15rem, 32vw, 24rem);
+  height: clamp(17rem, 46svh, 30rem);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.entry-door__leaf {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg) 94%, black) 0%,
+    color-mix(in srgb, var(--wall) 50%, var(--glow)) 62%,
+    color-mix(in srgb, var(--glow) 70%, var(--bg)) 100%);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 150px -20px color-mix(in srgb, var(--glow) 60%, transparent);
+  transition: box-shadow 800ms var(--ease);
+}
+
+/* Light under the door, the way there is under any door with a room behind it. */
+.entry-door__light {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  bottom: -3px;
+  height: 9px;
+  background: var(--glow);
+  opacity: 0.9;
+  filter: blur(3px);
+  transition: opacity 800ms var(--ease), height 800ms var(--ease);
+}
+
+/* Lettered on the door. Sits over the leaf and never eats the click. */
+.entry__title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(88%, 20rem);
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.25rem);
+  line-height: 1.05;
+  color: var(--ink);
+  pointer-events: none;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.55);
+}
+
+.entry-door:hover + .entry__title,
+.entry-door:focus-visible + .entry__title { color: #fff; }
+
+.entry-door:hover .entry-door__leaf,
+.entry-door:focus-visible .entry-door__leaf {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 85%, transparent),
+    0 0 190px -10px color-mix(in srgb, var(--glow) 80%, transparent);
+}
+.entry-door:hover .entry-door__light,
+.entry-door:focus-visible .entry-door__light { opacity: 1; height: 13px; }
+
+/* The building itself only fades up once the door is open. */
+.corridor-viewport .corridor,
+.corridor-viewport .corridor-ui__progress,
+.corridor-viewport .corridor-ui__status {
+  opacity: 0;
+  transition: opacity 1200ms var(--ease);
+}
+.corridor-viewport.is-entered .corridor,
+.corridor-viewport.is-entered .corridor-ui__progress,
+.corridor-viewport.is-entered .corridor-ui__status {
+  opacity: 1;
+}
+
+
 /* ── The fixed layer over the walk ───────────────────────────────────────── */
 
 .corridor-ui {

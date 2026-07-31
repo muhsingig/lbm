@@ -1,4 +1,3 @@
-import { chapters } from '@/content/exhibition';
 import { Room } from '@/components/Room';
 
 export const metadata = {
@@ -7,22 +6,12 @@ export const metadata = {
     'The digital garden. Resonating Microcosms, Flowers and People, and Nirvana — rendered live, so the image you stand in has never existed before.',
 };
 
-const chapter = chapters.find((c) => c.id === 'level-1')!;
 
 export default function Page() {
   return (
     <Room
       room="level-1"
       chapterId="level-1"
-      extraPlates={[
-        {
-          id: 'field-note',
-          kind: 'note',
-          eyebrow: 'Field note — our own',
-          title: 'Capture, not acquisition',
-          body: chapter.fieldNote!,
-        },
-      ]}
     />
   );
 }

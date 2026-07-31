@@ -122,7 +122,6 @@ export interface Chapter {
   /** One sentence, second person, alone on screen. */
   threshold?: string;
   moments: Moment[];
-  fieldNote?: string;
   quote?: Quote;
   palette: Palette;
   /** Which motion vocabulary this chapter uses. */
@@ -261,8 +260,7 @@ export const chapters: Chapter[] = [
     railLabel: 'HALL',
     title: 'The Hallway',
     artist: 'Jio World Centre · Swadesh',
-    threshold:
-      'The first thing that reaches you is not a sight. It is a warm, musky note close to oud, held evenly across an enormous volume of air.',
+    threshold: 'A mosaic of Indian culture and heritage.',
     palette: palettes.hallway,
     motion: 'architectural',
     moments: [
@@ -357,8 +355,6 @@ export const chapters: Chapter[] = [
           'Swadesh keeps a live loom on the shop floor, warped and threaded, so you watch cloth being made in the room where cloth is sold. The making is put on display instead of the made thing. Hold on to this — it is the same move the top floor makes with twenty-five years of an artist’s sketchbooks, and the pairing turned out to be the most useful thing we carried out of the building.',
       },
     ],
-    fieldNote:
-      'The hallway is doing two jobs that pull against each other on purpose. The ceiling height, the chandeliers and the car scale you down. The marquetry, the pottery and the loom sit at eye level and within arm’s reach. You are made small, and then you are made welcome, and both happen before you have paid for anything.',
   },
 
   /* ───────────────────────────── LEVEL 0 ────────────────────────────────── */
@@ -419,7 +415,7 @@ export const chapters: Chapter[] = [
       },
       {
         id: 'presence-and-erasure',
-        layout: 'text-only',
+        layout: 'full',
         label: {
           kind: 'wall',
           attribution: 'Random International',
@@ -427,10 +423,19 @@ export const chapters: Chapter[] = [
           year: '2019',
           medium: 'Camera, ultraviolet light, photosensitive plywood',
           floor: 'LEVEL 00',
-          note: 'Not photographed. On a work about disappearing, the gap is the record.',
+          note: 'Filmed on the floor, with somebody’s face still holding on the panel.',
+        },
+        media: {
+          kind: 'video',
+          src: '/media/level-0/03-presence-and-erasure.mp4',
+          poster: '/media/level-0/03-presence-and-erasure.jpg',
+          alt: 'A pale gallery with track lighting overhead and a wooden floor. On the grey wall hangs a large panel the colour of raw plywood, carrying a portrait of a face in violet, burned into it by ultraviolet light. One visitor stands close in front of it, watching. Another, in the foreground, holds a phone up to film it.',
+          width: 576,
+          height: 1024,
+          lowRes: true,
         },
         body:
-          'A camera you do not notice takes your face and burns it by ultraviolet light onto photosensitive plywood. It glows for a while. Then it fades, and there is nothing, and the wood is ready for the next person. In our notes we called this the printing machine — the imprint other people leave on you. We did not photograph it, which on a work about disappearing is an accident we have decided to keep.',
+          'A camera you do not notice takes your face and burns it by ultraviolet light onto photosensitive plywood. It glows for a while. Then it fades, and there is nothing, and the wood is ready for the next person. In our notes we called this the printing machine — the imprint other people leave on you. In the clip somebody’s face is still holding on the panel while the next visitor lines a phone up at it.',
       },
     ],
     quote: {
@@ -440,8 +445,6 @@ export const chapters: Chapter[] = [
       role: 'co-founder, Random International',
       source: 'to STIRworld, 18 July 2026',
     },
-    fieldNote:
-      'We read this floor as memory — people arriving and leaving, bringing brightness with them. The artists built it as a study of surveillance. Both readings hold, and a room that lets the visitor supply the meaning is doing something a showroom never does.',
   },
 
   /* ───────────────────────────── LEVEL 1 ────────────────────────────────── */
@@ -481,7 +484,7 @@ export const chapters: Chapter[] = [
       },
       {
         id: 'flowers-and-people',
-        layout: 'text-only',
+        layout: 'offset-left',
         label: {
           kind: 'wall',
           attribution: 'teamLab',
@@ -489,14 +492,21 @@ export const chapters: Chapter[] = [
           year: '2014 – present',
           medium: 'Interactive digital installation, floor and wall projection, rendered in real time',
           floor: 'LEVEL 01',
-          note: 'Not photographed.',
+          note: 'Our own photograph — the five of us standing inside the work.',
+        },
+        media: {
+          kind: 'image',
+          src: '/media/level-1/02-flowers-and-people.jpg',
+          alt: 'Five students standing shoulder to shoulder in a dark room, lit from behind and below by a wall-sized projection of flowers in magenta, blue and yellow. The projection spills across the floor and over their clothes and faces. One of them holds a phone up to take the photograph.',
+          width: 960,
+          height: 1280,
         },
         body:
-          'Floor and walls. Stand still and flowers gather around your feet. Walk through them, or reach down and touch them, and they scatter and die. None of it is recorded. It is rendered as you stand in it, which means the image you are inside has never existed before and will not exist again. We have no photograph of it. On this particular work that is almost the correct outcome.',
+          'Floor and walls. Stand still and flowers gather around your feet. Walk through them, or reach down and touch them, and they scatter and die. None of it is recorded. It is rendered as you stand in it, which means the image you are inside has never existed before and will not exist again. The only photograph we have of this work is a photograph of ourselves inside it — which, on a work that does not exist until somebody is standing in it, is the more accurate record.',
       },
       {
         id: 'nirvana',
-        layout: 'text-only',
+        layout: 'offset-right',
         label: {
           kind: 'wall',
           attribution: 'teamLab',
@@ -504,7 +514,14 @@ export const chapters: Chapter[] = [
           year: '2013',
           medium: 'Digital work projected onto rhinestone wallpaper, four walls',
           floor: 'LEVEL 01',
-          note: 'After Itō Jakuchū (1716–1800). Not photographed.',
+          note: 'After Itō Jakuchū (1716–1800).',
+        },
+        media: {
+          kind: 'image',
+          src: '/media/level-1/03-nirvana.jpg',
+          alt: 'Two walls meeting in a corner of a dark room, both covered in rhinestone wallpaper that throws back the light as a fine glitter. Projected across them is a field of flowers built from countless coloured specks — rust red, cornflower blue, ochre and violet — which resolves into blossom at a distance and breaks into grains up close. A projector is visible on the black ceiling and the polished floor holds the reflection.',
+          width: 1200,
+          height: 1600,
         },
         body:
           'Projected across four walls onto rhinestone wallpaper, built on the logic of the mid-Edo painter Itō Jakuchū, who assembled birds and flowers out of grids of tiny coloured squares. Stand close and it shatters into squares. Step back and the flowers re-form. The whole floor works this way: get near enough to anything here and it turns into its parts.',
@@ -517,8 +534,6 @@ export const chapters: Chapter[] = [
       role: 'teamLab',
       source: 'to STIRworld, 18 July 2026',
     },
-    fieldNote:
-      'Everybody here was filming. The conversation in the room was about where to stand and whether to shoot video or stills, and who was next for the same frame. Nobody discussed buying anything, because there was nothing to buy. The purchase conversation had been replaced by a capture conversation.',
   },
 
   /* ───────────────────────────── LEVEL 2 ────────────────────────────────── */
@@ -590,8 +605,6 @@ export const chapters: Chapter[] = [
       role: 'A.A. Murakami',
       source: 'to STIRworld, 18 July 2026',
     },
-    fieldNote:
-      'The scent changed on this floor — fresh, fruity, almost playful. This is the release, and it is built out of contrast. Two floors of being made self-conscious, and then the building hands you permission to behave like a child. You could see it on everyone, adults included. Because Lightweeds runs on live weather, this is the only room in the building that is not the same room twice.',
   },
 
   /* ───────────────────────────── LEVEL 3 ────────────────────────────────── */
@@ -619,14 +632,13 @@ export const chapters: Chapter[] = [
           note: 'Reworked for NMACC. Film with the dancer Dam Van Huynh.',
         },
         media: {
-          kind: 'image',
-          src: '/media/level-3/01-screenshare-sketchbook-wall.jpg',
-          alt: 'A wide, low wall built from hundreds of open sketchbooks glowing pale in an otherwise dark room, projected drawings covering every page — birds, hands, faces and handwritten notes in white line. The heads and shoulders of seated visitors are silhouetted along the bottom left of the frame.',
-          width: 960,
-          height: 1280,
-          // Shot in portrait with a lot of dead dark ceiling above the wall.
-          // Crop down to the wall itself and let it run wide.
-          crop: { aspect: '16 / 9', position: 'center 74%' },
+          kind: 'video',
+          src: '/media/level-3/01-screenshare.mp4',
+          poster: '/media/level-3/01-screenshare.jpg',
+          alt: 'A wide, low wall built from hundreds of open sketchbooks glowing pale in an otherwise dark room, every page covered in drawings and handwritten notes. A brilliant white shape moves across the wall as the projected film plays over it, throwing its reflection down the polished floor in the foreground.',
+          width: 464,
+          height: 832,
+          lowRes: true,
         },
         body:
           'The screen is not a screen. It is a wall built from 365 sketchbooks holding around twenty-five years of Devlin’s drawings and notes. Across it plays a film of the Vietnamese dancer Dam Van Huynh performing beside a recording of himself made nearly two decades earlier — the same body, moving next to the memory of itself. Look closely at the wall in this photograph and the drawings are legible. A great many of them are birds.',
@@ -647,51 +659,17 @@ export const chapters: Chapter[] = [
           floor: 'LEVEL 03',
           note: 'Photographed against the wall it came from, before we left the floor.',
         },
-        /* The photograph is not in the repo yet, so this runs in the same
-           "described but not photographed" state the rest of the site uses for
-           an honest gap — a broken frame would be worse than an empty one.
-           To restore, save the file and paste this back:
-
-           media: {
-             kind: 'image',
-             src: '/media/level-3/02-take-home-page.jpg',
-             alt: 'A large sheet of paper held up in front of the sketchbook wall, the pinned drawings of the wall itself visible behind it. On the sheet, drawn in pen: an open-sided cube in perspective, two faces the height of the structure filling its inner walls, and one small figure standing alone at its centre while a dense crowd of quickly drawn heads masses across the ground outside it. Long ruled lines flare outward to the left and right.',
-             width: 960,
-             height: 1280,
-             crop: { aspect: '16 / 9', position: 'center 43%' },
-           }, */
+        media: {
+          kind: 'image',
+          src: '/media/level-3/02-take-home-page.jpg',
+          alt: 'A large sheet of paper held up in front of the sketchbook wall, the pinned drawings of the wall itself visible behind it. On the sheet, drawn in pen: an open-sided cube in perspective, two faces the height of the structure filling its inner walls, and one small figure standing alone at its centre while a dense crowd of quickly drawn heads masses across the ground outside it. Long ruled lines flare outward to the left and right.',
+          width: 960,
+          height: 1280,
+          // Phone held in portrait; the sheet is a wide band across the middle.
+          crop: { aspect: '16 / 9', position: 'center 43%' },
+        },
         body:
           'The page one of us pulled off the wall was not a bird. It was a stage — an open-sided cube drawn in perspective, two faces the height of the structure filling its inner walls, one small figure alone at the centre, and a crowd put in last as a field of hurried strokes across the floor outside. Devlin’s other working life is designing stages for stadium tours, and the sketchbooks do not separate that work from the rest of the drawing. Held up against the wall it came from, it is still legible as a thought rather than a finished thing: ruled construction lines left in, a face redrawn twice, the crowd added afterwards.',
-      },
-      {
-        id: 'take-home-maze',
-        layout: 'offset-right',
-        label: {
-          kind: 'wall',
-          plate: 'PLATE 12',
-          attribution: 'Es Devlin',
-          title: 'The same page, at home',
-          medium: 'Pen on paper; boxed title and marginal note in the artist’s hand',
-          floor: 'LEVEL 03',
-          note: 'Photographed after the visit, on a kitchen cloth in Mumbai.',
-        },
-        /* As above — file not in the repo yet. To restore, paste this back:
-
-           media: {
-             kind: 'image',
-             src: '/media/level-3/03-take-home-page-maze.jpg',
-             alt: 'A sheet of paper photographed on a patterned cloth. In pen, a dense lattice of staircases and ramps crossing one another at conflicting angles in the manner of an Escher interior, with a few small figures climbing them. A boxed title is handwritten at the head of the sheet and a note runs down the left-hand side.',
-             width: 900,
-             height: 1600,
-             crop: { aspect: '3 / 4', position: 'center 52%' },
-           }, */
-        // Still to do: transcribe the boxed title and the marginal note, then work the
-        // artist's own words into the body below. Partial reading only, not yet
-        // verified: "...imagines a MAZE all around them ... the surface is ...
-        // real concrete, masonry etc." Left out of the copy deliberately rather
-        // than paraphrased from a guess.
-        body:
-          'The second page only reads properly once it is out of the building. On a kitchen cloth at home it is a lattice of staircases running at conflicting angles, an interior that cannot be built, with figures climbing it anyway — and along one edge, a note in the artist’s hand working the problem out. This is the part the wall label cannot do. An archive that disperses does not end up in storage; it ends up on a table in Mumbai, in a house that has nothing to do with the building it left.',
       },
     ],
     quote: {
@@ -701,8 +679,6 @@ export const chapters: Chapter[] = [
       role: 'co-curator; co-founder, Superblue',
       source: 'to STIRworld, 18 July 2026',
     },
-    fieldNote:
-      'We each chose one. Many of the drawings were about self-reflection and isolation. Several were birds. The floor turns you inward, and nobody in our group said much on the way back down.',
   },
 
   /* ───────────────────────── THE THREE ANSWERS ──────────────────────────── */
@@ -739,8 +715,8 @@ export const inversion = {
     body:
       'The archive disperses over the run of the exhibition. The work is designed to be diminished by the people who come to see it — every visitor leaves with a piece of it, and the wall gets smaller. A brand willingly letting its own asset be carried away in pieces is the opposite of how this category normally behaves.',
     /* The `todo` that used to sit here pointed at a missing scan of the page.
-       PLATE 11 and PLATE 12 now carry those pages directly, so the note has
-       nowhere left to point. */
+       PLATE 11 now carries that page directly, so the note has nowhere left
+       to point. */
   },
 };
 
@@ -764,8 +740,6 @@ export const stairwells: Stairwell[] = [
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export const findings = {
-  intro:
-    'The brief asked three questions. We answered them on the way down.',
   sections: [
     {
       n: '01',
@@ -801,8 +775,6 @@ export const findings = {
       ],
     },
   ],
-  closing:
-    'The brief asked how a brand makes an ordinary visitor feel extraordinary. Our answer is that it refuses to treat them as ordinary in the first place — by removing the price barrier, removing the salesperson, removing the instruction not to touch, and then handing over a piece of the artwork on the way out.',
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════

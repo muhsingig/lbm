@@ -34,13 +34,6 @@ export default function Page() {
           title: inversion.after.heading,
           body: `${inversion.line} ${inversion.after.body}`,
         },
-        {
-          id: 'field-note',
-          kind: 'note',
-          eyebrow: 'Field note — our own',
-          title: 'Nobody said much on the way down',
-          body: chapter.fieldNote!,
-        },
       ]}
     />
   );

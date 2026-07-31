@@ -22,6 +22,7 @@ import { useThreshold } from './Threshold';
    than the screen or you can see past the walls. */
 const GAP = 1500; // distance between doors
 const LEAD = 1700; // how far you walk before the first door
+const ENTRY_Z = 1000; // the door you open to begin, standing dead ahead
 const NEAR = 1100; // how much corridor sits behind the camera
 const DEPTH = LEAD + GAP * (rooms.length - 1) + 900;
 
@@ -46,6 +47,21 @@ export function Corridor() {
   const [reduced, setReduced] = useState(false);
   const [dims, setDims] = useState({ w: 1400, h: 900 });
 
+  /* You do not start walking. You start standing in front of a door, and the
+     walk only begins once you have opened it — entering is an act rather than
+     a scroll. The ref is what the wheel and key handlers read, because those
+     are bound once and would otherwise close over a stale `false`. */
+  const [entered, setEntered] = useState(false);
+  const enteredRef = useRef(false);
+
+  const enter = useCallback(() => {
+    if (enteredRef.current) return;
+    enteredRef.current = true;
+    setEntered(true);
+    // A step through the doorway, so the corridor is already moving.
+    target.current = ENTRY_Z + 260;
+  }, []);
+
   /* The corridor must be wider and taller than the screen, or its mouth shows
      as a rectangle floating in the dark. */
   useEffect(() => {
@@ -67,7 +83,12 @@ export function Corridor() {
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReduced(mq.matches);
-    if (mq.matches) return;
+    if (mq.matches) {
+      // No camera to drive, so there is no doorway to open either.
+      enteredRef.current = true;
+      setEntered(true);
+      return;
+    }
 
     let raf = 0;
     const loop = () => {
@@ -84,6 +105,8 @@ export function Corridor() {
     const onWheel = (e: WheelEvent) => {
       if (document.querySelector('.overlay')) return;
       e.preventDefault();
+      // Scrolling at a closed door does nothing. Opening it is the way in.
+      if (!enteredRef.current) return;
       nudge(e.deltaY * 1.35);
     };
 
@@ -91,6 +114,7 @@ export function Corridor() {
     const onTouchStart = (e: TouchEvent) => { touchY = e.touches[0]!.clientY; };
     const onTouchMove = (e: TouchEvent) => {
       if (document.querySelector('.overlay')) return;
+      if (!enteredRef.current) return;
       const y = e.touches[0]!.clientY;
       nudge((touchY - y) * 3.2);
       touchY = y;
@@ -98,6 +122,7 @@ export function Corridor() {
 
     const onKey = (e: KeyboardEvent) => {
       if (document.querySelector('.overlay')) return;
+      if (!enteredRef.current) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         nudge(700);
@@ -129,7 +154,7 @@ export function Corridor() {
   const progress = Math.min(1, walk / END);
 
   return (
-    <div className="corridor-viewport">
+    <div className={`corridor-viewport${entered || reduced ? ' is-entered' : ''}`}>
       <div
         ref={world}
         className="corridor"
@@ -153,6 +178,7 @@ export function Corridor() {
 
         {/* The end of the corridor, glowing. */}
         <div className="plane plane--end" aria-hidden="true" />
+
 
         {doors.map(({ room, z, side }) => (
           <a
@@ -179,23 +205,53 @@ export function Corridor() {
         ))}
       </div>
 
-      {/* ── Fixed overlay: the title at the start, then the walk ─────────── */}
-      <div className="corridor-ui">
-        <div
-          className="corridor-ui__intro"
-          style={{ opacity: Math.max(0, 1 - walk / 900), pointerEvents: walk > 400 ? 'none' : 'auto' }}
-        >
-          <p className="t-label text-[var(--accent)]">{hero.eyebrow}</p>
-          <h1 className="t-display mt-6 text-[clamp(3rem,1.6rem+8vw,8rem)] text-[var(--ink)]">
-            Second Nature
-          </h1>
-          <p className="t-display t-display--italic mx-auto mt-6 max-w-[28ch] text-[clamp(1.125rem,1rem+1vw,1.75rem)] text-[var(--muted)]">
-            {hero.premise}
-          </p>
-          <p className="t-label mt-12 text-[var(--muted)]">
-            {reduced ? 'Choose a floor below' : 'Scroll to walk'}
-          </p>
+      {/* ── The way in ──────────────────────────────────────────────────────
+          A closed door on a black field. The building is behind it and stays
+          out of sight until it is opened — you should not be able to read the
+          floors off the walls before you have gone in. */}
+      {!reduced ? (
+        <div className={`entry${entered ? ' entry--open' : ''}`} aria-hidden={entered || undefined}>
+          <p className="t-label entry__eyebrow">{hero.eyebrow}</p>
+
+          <div className="entry__frame">
+            <button
+              type="button"
+              onClick={enter}
+              className="entry-door"
+              aria-label="Enter Second Nature"
+              tabIndex={entered ? -1 : 0}
+            >
+              <span className="entry-door__leaf" aria-hidden="true">
+                <span className="entry-door__light" />
+              </span>
+            </button>
+            {/* Lettered on the door itself, and outside the button because a
+                heading is not phrasing content. */}
+            <h1 className="t-display entry__title">Second Nature</h1>
+          </div>
+
+          <p className="t-label entry__hint">Open the door to begin</p>
         </div>
+      ) : null}
+
+      {/* ── Fixed overlay: the walk itself ──────────────────────────────── */}
+      <div className="corridor-ui">
+        {entered || reduced ? (
+          <div
+            className="corridor-ui__intro"
+            /* Never interactive — it is type over a scene. */
+            style={{ opacity: Math.max(0, 1 - walk / 900), pointerEvents: 'none' }}
+          >
+            {/* The door carried the title; keep one heading for structure. */}
+            <h1 className="sr-only">Second Nature — a walkthrough</h1>
+            <p className="t-display t-display--italic mx-auto max-w-[28ch] text-[clamp(1.125rem,1rem+1vw,1.75rem)] text-[var(--muted)]">
+              {hero.premise}
+            </p>
+            <p className="t-label mt-10 text-[var(--muted)]">
+              {reduced ? 'Choose a floor below' : 'Scroll to walk'}
+            </p>
+          </div>
+        ) : null}
 
         {/* How far along the building you are. */}
         <div className="corridor-ui__progress" aria-hidden="true">
